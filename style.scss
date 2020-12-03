@@ -116,30 +116,78 @@
     }
 }
 }
+#time {
+	position: absolute;
+	right: 100vw;
+	
+	+ label {
+		--i: 0;
+		--j: calc(1 - var(--i));		
+		display: grid;
+		grid-gap: 5em 25em;
+		overflow: hidden;
+		padding: 5em;
+		height: 2.5em;
+		border-radius: 0.5* 2.5em + 5em;
+		background: hsl(199, 98%, calc(var(--j)*48%));
+		color: transparent;
+		user-select: none;
+		transition: .3s;
+		cursor: pointer;
+		
+		&:before, &:after {
+			width: 2.5em; height: 2.5em;
+			transition: inherit;
+			content: ''
+		}
+		
+		&:before {
+			transform-origin: 20%	20%;
+			transform: translate(calc(var(--i)*(100% + #{25em}))) 
+								 scale(calc(1 - var(--i)*.7));
+			background: hsl(60, 100%, 50%);
+			@include star(10, .75)
+		}
+		
+		&:after {
+			grid-column: 2;
+			border-radius: 50%;
+			transform: translatey(calc(var(--i)*(-100% - #{5em})));
+			background: 
+				radial-gradient(circle at 19% 19%, 
+						transparent 41%, #fff 43%)
+		}
+	}
+	
+	&:checked + label { --i: 1 }
+}
 .sudoku_board{
-    width: 54.1rem;
-    height: 54.1rem;
-    border: 0.1rem solid black;
+    width: 41.7rem;
+    height: 41.7rem;
+    border: 0.2rem solid black;
     margin: 1rem 2.5rem 1rem 11rem;
     display: grid;
-    grid-template-columns: repeat(9, 1fr);
-    grid-template-rows: repeat(9,1fr);
-    .cell {
-        width: 6rem;
-        height: 6rem;
-        font-size: 4rem;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3,1fr);
+    .sudoku_box{
         display: grid;
-        cursor: pointer;
-        justify-items: center;
-        align-items: center;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3,1fr);
         border: 0.1rem solid black;
-        background-color: #ffffff;
+        .cell{
+            display: grid;
+            font-size: 2rem;
+            align-items: center;
+            justify-content: center;
+            border: 0.1rem solid black;
+            background-color: #ffffff;
+        }
+        .cell:hover{
+            background-color: #b9b9b9;
+        }
+        .gray_cell{
+            border: 0.1rem solid black;
+            background-color: #e0e0e0;
+        }
     }
-    .cell:hover{
-        background-color: #c4c4c4;
-    }
-    .gray_cell{
-        background-color: #ececec;
-    }
-    
 }
