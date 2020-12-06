@@ -9,6 +9,7 @@ let musicMuteButton = document.getElementById("music_mute");
 let newGame = document.getElementById("newGame");
 let difficultyOptions = document.querySelectorAll(".difficulty_option");
 let numbersKeypad = document.getElementById("numbers_Keypad");
+let checkTime;
 const easy = [
     "6------7------5-2------1---362----81--96-----71--9-4-5-2---651---78----345-------",
     "685329174971485326234761859362574981549618732718293465823946517197852643456137298"
@@ -24,111 +25,112 @@ const hard = [
 let timerTime = 0;
 let gamePaused = false;
 musicPaused = false;
-// unpausing the game and showing the pause button
 window.onload = function () {
-    function continueGame() {
-        continueGameButton.removeEventListener("click", continueGame);
-        continueGameButton.style.display = "none";
-        gamePaused = false;
-        pauseGameButton.addEventListener("click", pauseGame);
-        pauseGameButton.style.display = "inline-block";
-    }
-    function playMusic() {
-        musicMuteButton.removeEventListener("click", playMusic);
-        musicMuteButton.style.display = "none";
-        gamePaused = false;
-        musicPlayButton.addEventListener("click", pauseMusic);
-        musicPlayButton.style.display = "inline-block";
-    }
-    // pausing the game and showing the play button
-    function pauseGame() {
-        pauseGameButton.removeEventListener("click", pauseGame);
-        pauseGameButton.style.display = "none";
-        gamePaused = true;
-        continueGameButton.addEventListener("click", continueGame);
-        continueGameButton.style.display = "inline-block";
-    }
-    function pauseMusic() {
-        musicPlayButton.removeEventListener("click", pauseMusic);
-        musicPlayButton.style.display = "none";
-        musicPaused = true;
-        musicMuteButton.addEventListener("click", playMusic);
-        musicMuteButton.style.display = "inline-block";
-    }
-    // function which calculates and displays the pasted time
-    function updateTime() {
-        if (!gamePaused) {
-            timerTime += 1;
-            let hours = Math.floor(timerTime / 3600);
-            let minutes = Math.floor((timerTime - hours * 3600) / 60);
-            let seconds = timerTime - (hours * 3600 + minutes * 60);
-            if (hours < 10)
-                hours = "0" + hours;
-            if (minutes < 10)
-                minutes = "0" + minutes;
-            if (seconds < 10)
-                seconds = "0" + seconds;
-            currentTime.textContent = hours + ":" + minutes + ":" + seconds;
-        }
-    }
-    // function which generates the sudoku board and the random number inside the cells
-    function drawSudokuBoard() {
-        for (let b = 0; b < 9; b++) {
-            if (!b == 0) {
-                sudokuBox = document.createElement('div');
-                sudokuBox.className = "sudoku_box";
-                sudokuBoard.appendChild(sudokuBox);
-            }
-            for (let i = 0; i < 9; i++) {
-                sudokuCell = document.createElement('div');
-                if (((i + 1) % 2) == 1) {
-                    sudokuCell.className = ' gray_cell ' + ' cell' + ' empty_cell';
-                }
-                else if (((i + 1) % 2) == 0) {
-                    sudokuCell.className = ' cell' + ' empty_cell';
-                }
-                sudokuBox.appendChild(sudokuCell);
-            }
-        }
-        let createdCells = document.querySelectorAll('.cell');
-        for (let i = 0; i < createdCells.length; i++) {
-            createdCells[i].textContent = "";
-        }
-    }
-    function generateSudokuBoard(board) {
-        // Clear previous board in case there was any
-        clearPrevious();
-        let createdCells = document.querySelectorAll('.cell');
-        for (let i = 0; i < 81; i++) {
-            if (board.chartAt(i) != "-") {
-                createdCells[i].textContent = board.chartAt(i);
-            }
-            else {
-                createdCells[i].textContent = "";
-            }
-        }
-    }
-    function clearPrevious() {
-        // Clear all tiles
-        let createdCells = document.querySelectorAll('.cell');
-        for (let i = 0; i < createdCells.length; i++) {
-            createdCells[i].textContent = "";
-        }
-        // Restart Timer
-        timerTime = 0
-        currentTime.textContent = "00:00:00"
-        // Deselect all the numbers under numbers keypad
-        for (let i = 0; i < numbersKeypad.children.length; i++) {
-            numbersKeypad.children[i].classList.remove("selected")
-        }
-    }
-    function startGame() {
-        let board = easy[0];
-        generateSudokuBoard(board);
-    }
-    drawSudokuBoard();
-    let checkTime = setInterval(updateTime, 1000);
     pauseGameButton.addEventListener("click", pauseGame);
     musicPlayButton.addEventListener("click", pauseMusic);
     newGame.addEventListener("click", startGame);
 }
+// unpausing the game and showing the pause button
+function continueGame() {
+    continueGameButton.removeEventListener("click", continueGame);
+    continueGameButton.style.display = "none";
+    gamePaused = false;
+    pauseGameButton.addEventListener("click", pauseGame);
+    pauseGameButton.style.display = "inline-block";
+}
+function playMusic() {
+    musicMuteButton.removeEventListener("click", playMusic);
+    musicMuteButton.style.display = "none";
+    gamePaused = false;
+    musicPlayButton.addEventListener("click", pauseMusic);
+    musicPlayButton.style.display = "inline-block";
+}
+// pausing the game and showing the play button
+function pauseGame() {
+    pauseGameButton.removeEventListener("click", pauseGame);
+    pauseGameButton.style.display = "none";
+    gamePaused = true;
+    continueGameButton.addEventListener("click", continueGame);
+    continueGameButton.style.display = "inline-block";
+}
+function pauseMusic() {
+    musicPlayButton.removeEventListener("click", pauseMusic);
+    musicPlayButton.style.display = "none";
+    musicPaused = true;
+    musicMuteButton.addEventListener("click", playMusic);
+    musicMuteButton.style.display = "inline-block";
+}
+// function which calculates and displays the pasted time
+function updateTime() {
+    if (!gamePaused) {
+        timerTime += 1;
+        let hours = Math.floor(timerTime / 3600);
+        let minutes = Math.floor((timerTime - hours * 3600) / 60);
+        let seconds = timerTime - (hours * 3600 + minutes * 60);
+        if (hours < 10)
+            hours = "0" + hours;
+        if (minutes < 10)
+            minutes = "0" + minutes;
+        if (seconds < 10)
+            seconds = "0" + seconds;
+        currentTime.textContent = hours + ":" + minutes + ":" + seconds;
+    }
+}
+// function which generates the sudoku board and the random number inside the cells
+function drawSudokuBoard() {
+    for (let b = 0; b < 9; b++) {
+        if (!b == 0) {
+            sudokuBox = document.createElement('div');
+            sudokuBox.className = "sudoku_box";
+            sudokuBoard.appendChild(sudokuBox);
+        }
+        for (let i = 0; i < 9; i++) {
+            sudokuCell = document.createElement('div');
+            if (((i + 1) % 2) == 1) {
+                sudokuCell.className = ' gray_cell ' + ' cell' + ' empty_cell';
+            }
+            else if (((i + 1) % 2) == 0) {
+                sudokuCell.className = ' cell' + ' empty_cell';
+            }
+            sudokuBox.appendChild(sudokuCell);
+        }
+    }
+    let createdCells = document.querySelectorAll('.cell');
+    for (let i = 0; i < createdCells.length; i++) {
+        createdCells[i].textContent = "";
+    }
+}
+function generateSudokuBoard(board) {
+    // Clear previous board in case there was any
+    clearPrevious();
+    let createdCells = document.querySelectorAll('.cell');
+    for (let i = 0; i < 81; i++) {
+        if (board.charAt(i) != "-") {
+            createdCells[i].textContent = board.charAt(i);
+        }
+        else {
+            createdCells[i].textContent = "";
+        }
+    }
+}
+function clearPrevious() {
+    // Clear all tiles
+    let createdCells = document.querySelectorAll('.cell');
+    for (let i = 0; i < createdCells.length; i++) {
+        createdCells[i].textContent = "";
+    }
+    // Restart Timer
+    timerTime = 0
+    currentTime.textContent = "00:00:00"
+    clearInterval(checkTime);
+    // Deselect all the numbers under numbers keypad
+    for (let i = 0; i < numbersKeypad.children.length; i++) {
+        numbersKeypad.children[i].classList.remove("selected")
+    }
+}
+function startGame() {
+    let board = easy[0];
+    generateSudokuBoard(board);
+    checkTime = setInterval(updateTime, 1000);
+}
+drawSudokuBoard();
