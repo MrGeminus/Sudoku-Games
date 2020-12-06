@@ -1,4 +1,9 @@
+@font-face{
+    src: url(../fonts/Ranchers-Regular.ttf);
+    font-family: Ranchers;
+}
 *{
+    font-family: Ranchers;
     box-sizing: border-box;
     padding: 0;
     margin: 0;
@@ -24,7 +29,7 @@
             border-radius: 0.1rem;
         }
         button:hover{
-            background-color: #55bff0;
+            background-color: #23abeb;
         }
     }
 }
@@ -47,6 +52,7 @@
         cursor: pointer;
     }
     }
+}
 }
 .timer{
     display: flex;
@@ -83,14 +89,14 @@
         background-position: center center;
     }
 }
-    .mode{
+.mode{
     margin-left: 3rem;
 }
-    .music{
+.music{
     display: flex;
     padding: 0.3rem;
     margin-left: 3rem;
-    .music_mute{
+    #music_mute{
         display: none;
         position: absolute;
         width: 1.8rem;
@@ -98,11 +104,11 @@
         border: none;
         cursor: pointer;
         background: url('data:image/svg+xml;utf8,<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="volume-mute" class="svg-inline--fa fa-volume-mute fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M215.03 71.05L126.06 160H24c-13.26 0-24 10.74-24 24v144c0 13.25 10.74 24 24 24h102.06l88.97 88.95c15.03 15.03 40.97 4.47 40.97-16.97V88.02c0-21.46-25.96-31.98-40.97-16.97zM461.64 256l45.64-45.64c6.3-6.3 6.3-16.52 0-22.82l-22.82-22.82c-6.3-6.3-16.52-6.3-22.82 0L416 210.36l-45.64-45.64c-6.3-6.3-16.52-6.3-22.82 0l-22.82 22.82c-6.3 6.3-6.3 16.52 0 22.82L370.36 256l-45.63 45.63c-6.3 6.3-6.3 16.52 0 22.82l22.82 22.82c6.3 6.3 16.52 6.3 22.82 0L416 301.64l45.64 45.64c6.3 6.3 16.52 6.3 22.82 0l22.82-22.82c6.3-6.3 6.3-16.52 0-22.82L461.64 256z"></path></svg>');
-        background-size: 1.4rem;
+        background-size: 1.3rem;
         background-repeat: no-repeat;
         background-position: center center;
     }
-    .music_play{
+    #music_play{
         display: inline-block;
         position: absolute;
         width: 1.8rem;
@@ -115,57 +121,13 @@
         background-position: center center;
     }
 }
-}
-#time {
-	position: absolute;
-	right: 100vw;
-	
-	+ label {
-		--i: 0;
-		--j: calc(1 - var(--i));		
-		display: grid;
-		grid-gap: 5em 25em;
-		overflow: hidden;
-		padding: 5em;
-		height: 2.5em;
-		border-radius: 0.5* 2.5em + 5em;
-		background: hsl(199, 98%, calc(var(--j)*48%));
-		color: transparent;
-		user-select: none;
-		transition: .3s;
-		cursor: pointer;
-		
-		&:before, &:after {
-			width: 2.5em; height: 2.5em;
-			transition: inherit;
-			content: ''
-		}
-		
-		&:before {
-			transform-origin: 20%	20%;
-			transform: translate(calc(var(--i)*(100% + #{25em}))) 
-								 scale(calc(1 - var(--i)*.7));
-			background: hsl(60, 100%, 50%);
-			@include star(10, .75)
-		}
-		
-		&:after {
-			grid-column: 2;
-			border-radius: 50%;
-			transform: translatey(calc(var(--i)*(-100% - #{5em})));
-			background: 
-				radial-gradient(circle at 19% 19%, 
-						transparent 41%, #fff 43%)
-		}
-	}
-	
-	&:checked + label { --i: 1 }
-}
+.game_section{
+    display: flex;
 .sudoku_board{
     width: 41.7rem;
     height: 41.7rem;
     border: 0.2rem solid black;
-    margin: 1rem 2.5rem 1rem 11rem;
+    margin: 1rem 1rem 1rem 11rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3,1fr);
@@ -186,8 +148,43 @@
             background-color: #b9b9b9;
         }
         .gray_cell{
-            border: 0.1rem solid black;
             background-color: #e0e0e0;
         }
     }
+} 
+#newGame{
+    font-size: 1.3rem;
+    font-weight: bold;
+    padding: 1.3rem 9rem;
+    margin: 1rem 11rem 1rem 1rem;
+    border: none;
+    border-radius: 0.3rem;
+    color: #000000;
+    background-color: #e0e0e0;
+    transition: all ease-in-out 0.5s;
+}
+#newGame:hover{
+    background-color: #23abeb;
+}
+#numbers_Keypad{
+    width: 24rem;
+    height: 19rem;
+    display: grid;
+    margin: 1rem 11rem 1rem 1rem;
+    border: 0.1rem solid black;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+.numberKey{
+    display: flex;
+    font-size: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    border: 0.1rem solid black;
+    transition: all ease-in-out 0.3s;
+}
+.numberKey:hover{
+    background-color: #b9b9b9;
+
+}
 }

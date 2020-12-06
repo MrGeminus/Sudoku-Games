@@ -4,8 +4,26 @@ let sudokuBox = document.querySelector(".sudoku_box");
 let currentTime = document.querySelector(".current_time");
 let continueGameButton = document.querySelector(".continueGame");
 let pauseGameButton = document.querySelector(".pauseGame");
+let musicPlayButton = document.getElementById("music_play");
+let musicMuteButton = document.getElementById("music_mute");
+let newGame = document.getElementById("newGame");
+let difficultyOptions = document.querySelectorAll(".difficulty_option");
+let numbersKeypad = document.getElementById("numbers_Keypad");
+const easy = [
+    "6------7------5-2------1---362----81--96-----71--9-4-5-2---651---78----345-------",
+    "685329174971485326234761859362574981549618732718293465823946517197852643456137298"
+];
+const medium = [
+    "--9-------4----6-758-31----15--4-36-------4-8----9-------75----3-------1--2--3--",
+    "619472583243985617587316924158247369926531478734698152891754236365829741472163895"
+];
+const hard = [
+    "-1-5-------97-42----5----7-5---3---7-6--2-41---8--5---1-4------2-3-----9-7----8--",
+    "712583694639714258845269173521436987367928415498175326184697532253841769976352841"
+];
 let timerTime = 0;
 let gamePaused = false;
+musicPaused = false;
 // unpausing the game and showing the pause button
 window.onload = function () {
     function continueGame() {
@@ -15,6 +33,13 @@ window.onload = function () {
         pauseGameButton.addEventListener("click", pauseGame);
         pauseGameButton.style.display = "inline-block";
     }
+    function playMusic() {
+        musicMuteButton.removeEventListener("click", playMusic);
+        musicMuteButton.style.display = "none";
+        gamePaused = false;
+        musicPlayButton.addEventListener("click", pauseMusic);
+        musicPlayButton.style.display = "inline-block";
+    }
     // pausing the game and showing the play button
     function pauseGame() {
         pauseGameButton.removeEventListener("click", pauseGame);
@@ -22,6 +47,13 @@ window.onload = function () {
         gamePaused = true;
         continueGameButton.addEventListener("click", continueGame);
         continueGameButton.style.display = "inline-block";
+    }
+    function pauseMusic() {
+        musicPlayButton.removeEventListener("click", pauseMusic);
+        musicPlayButton.style.display = "none";
+        musicPaused = true;
+        musicMuteButton.addEventListener("click", playMusic);
+        musicMuteButton.style.display = "inline-block";
     }
     // function which calculates and displays the pasted time
     function updateTime() {
@@ -39,33 +71,8 @@ window.onload = function () {
             currentTime.textContent = hours + ":" + minutes + ":" + seconds;
         }
     }
-    function checkRowCorrectness() {
-        if (i + 1 >= 1 && i + 1 <= 9) {
-
-        }
-    }
-    function checkColumnCorrectness() {
-
-    }
-    function checkBoxCorrectness(x, y) {
-        let createdBoxes = document.querySelectorAll('.sudoku_box');
-        if (y >= 0 && y <= 8) {
-            createdBoxes[0]
-            console.log(createdBoxes[0])
-        }
-    }
-    function generateNumber() {
-        let createdCells = document.querySelectorAll('.cell');
-        console.log(createdCells)
-        for (let i = 0; i < createdCells.length; i++) {
-            let generatedRandomNumber = Math.round((Math.random() * 8) + 1);
-            checkBoxCorrectness(generatedRandomNumber, i)
-            createdCells[i].textContent = generatedRandomNumber;
-            //createdCells[i].textContent = `${Math.round((Math.random() * 8) + 1)} `;
-        }
-    }
     // function which generates the sudoku board and the random number inside the cells
-    function generateSudokuBoard() {
+    function drawSudokuBoard() {
         for (let b = 0; b < 9; b++) {
             if (!b == 0) {
                 sudokuBox = document.createElement('div');
@@ -83,9 +90,45 @@ window.onload = function () {
                 sudokuBox.appendChild(sudokuCell);
             }
         }
-        generateNumber();
+        let createdCells = document.querySelectorAll('.cell');
+        for (let i = 0; i < createdCells.length; i++) {
+            createdCells[i].textContent = "";
+        }
     }
-    generateSudokuBoard();
+    function generateSudokuBoard(board) {
+        // Clear previous board in case there was any
+        clearPrevious();
+        let createdCells = document.querySelectorAll('.cell');
+        for (let i = 0; i < 81; i++) {
+            if (board.chartAt(i) != "-") {
+                createdCells[i].textContent = board.chartAt(i);
+            }
+            else {
+                createdCells[i].textContent = "";
+            }
+        }
+    }
+    function clearPrevious() {
+        // Clear all tiles
+        let createdCells = document.querySelectorAll('.cell');
+        for (let i = 0; i < createdCells.length; i++) {
+            createdCells[i].textContent = "";
+        }
+        // Restart Timer
+        timerTime = 0
+        currentTime.textContent = "00:00:00"
+        // Deselect all the numbers under numbers keypad
+        for (let i = 0; i < numbersKeypad.children.length; i++) {
+            numbersKeypad.children[i].classList.remove("selected")
+        }
+    }
+    function startGame() {
+        let board = easy[0];
+        generateSudokuBoard(board);
+    }
+    drawSudokuBoard();
     let checkTime = setInterval(updateTime, 1000);
     pauseGameButton.addEventListener("click", pauseGame);
+    musicPlayButton.addEventListener("click", pauseMusic);
+    newGame.addEventListener("click", startGame);
 }
