@@ -38,25 +38,37 @@
     display: flex;
     .difficulty{
         display: flex; 
-        padding: 0.3rem;
-        margin-left: 10.6rem;
+        margin-left: 11rem;
     .difficulty_label{
-            font-size: 1.5rem;
+        padding: 0.1rem 0;
+        font-size: 1.5rem;
+        margin-right: 0.5rem;
     }
     .difficulty_options{
         display: flex; 
-        .difficulty_option{
-        margin-left: 0.3rem;
+        label{
+        padding: 0.1rem 0.5rem;
+        margin-left: 0.1rem;
         font-size: 1.5rem;
-        list-style: none;
         cursor: pointer;
+        background-color: #ffffff;
+        border-radius: 0.1rem;
+        transition: all ease-in-out 0.3s;
     }
+        label:hover{
+            background-color: #b9b9b9;
+        }
+    .difficulty_option{
+        display: none;
+    }
+    .difficulty_option:checked + label{
+            background-color: #b9b9b9;
+        }
     }
 }
 }
 .timer{
     display: flex;
-    padding: 0.3rem;
     margin-left: 3rem;
     font-size: 1.5rem;
     .current_time{
@@ -94,7 +106,6 @@
 }
 .music{
     display: flex;
-    padding: 0.3rem;
     margin-left: 3rem;
     #music_mute{
         display: none;
@@ -167,7 +178,7 @@
     background-color: #23abeb;
 }
 #numbers_Keypad{
-    width: 24rem;
+    width: 23.8rem;
     height: 19rem;
     display: grid;
     margin: 1rem 11rem 1rem 1rem;

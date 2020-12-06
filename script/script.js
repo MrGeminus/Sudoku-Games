@@ -129,7 +129,16 @@ function clearPrevious() {
     }
 }
 function startGame() {
-    let board = easy[0];
+    let board;
+    if (difficultyOptions[0].checked) {
+        board = easy[0];
+    }
+    else if (difficultyOptions[1].checked) {
+        board = medium[0];
+    }
+    else {
+        board = hard[0]
+    }
     generateSudokuBoard(board);
     checkTime = setInterval(updateTime, 1000);
 }
