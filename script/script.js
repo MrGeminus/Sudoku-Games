@@ -23,12 +23,35 @@ const hard = [
     "712583694639714258845269173521436987367928415498175326184697532253841769976352841"
 ];
 let timerTime = 0;
+let selectedNumber = null;
+let selectedCell = null;
 let gamePaused = false;
-musicPaused = false;
+let musicPaused = false;
+let enableSelection = true;
 window.onload = function () {
     pauseGameButton.addEventListener("click", pauseGame);
     musicPlayButton.addEventListener("click", pauseMusic);
     newGame.addEventListener("click", startGame);
+    for (let i = 0; i < numbersKeypad.children.length; i++) {
+        numbersKeypad.children[i].addEventListener("click", activateNumbersKeypad)
+    }
+}
+function activateNumbersKeypad() {
+    // Checking if the selection is disabled
+    if (enableSelection) {
+        // Checking if an another number is already selected
+        if (this.classList.contains("selected")) {
+            this.classList.remove("selected");
+            selectedNumber = null;
+        }
+        else {
+            for (let i = 0; i < numbersKeypad.children.length; i++) {
+                numbersKeypad.children[i].classList.remove("selected")
+            }
+            this.classList.add("selected");
+            selectedNumber = this;
+        }
+    }
 }
 // unpausing the game and showing the pause button
 function continueGame() {
@@ -100,6 +123,22 @@ function drawSudokuBoard() {
         createdCells[i].textContent = "";
     }
 }
+function activateCell() {
+    if (enableSelection) {
+        if (this.classList.contains("selected")) {
+            this.classList.remove("selected");
+            selectedCell = null;
+        }
+        else {
+            let createdCells = document.querySelectorAll('.cell');
+            for (let i = 0; i < 81; i++) {
+                createdCells[i].classList.remove("selected")
+            }
+            this.classList.add("selected");
+            selectedCell = this;
+        }
+    }
+}
 function generateSudokuBoard(board) {
     // Clear previous board in case there was any
     clearPrevious();
@@ -110,6 +149,7 @@ function generateSudokuBoard(board) {
         }
         else {
             createdCells[i].textContent = "";
+            createdCells[i].addEventListener("click", activateCell);
         }
     }
 }

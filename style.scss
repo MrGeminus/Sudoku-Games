@@ -163,6 +163,9 @@
         }
     }
 } 
+.selected{
+    background-color: #b9b9b9 !important;
+}
 #newGame{
     font-size: 1.3rem;
     font-weight: bold;
@@ -192,6 +195,7 @@
     align-items: center;
     justify-content: center;
     border: 0.1rem solid black;
+    background-color: #ffffff;
     transition: all ease-in-out 0.3s;
 }
 .numberKey:hover{
