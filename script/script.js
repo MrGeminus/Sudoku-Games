@@ -10,6 +10,9 @@ let newGame = document.getElementById("newGame");
 let difficultyOptions = document.querySelectorAll(".difficulty_option");
 let numbersKeypad = document.getElementById("numbers_Keypad");
 let checkTime;
+let youWin = false;
+let youLose = false;
+let noEmptyCells = false;
 const easy = [
     "6------7------5-2------1---362----81--96-----71--9-4-5-2---651---78----345-------",
     "685329174971485326234761859362574981549618732718293465823946517197852643456137298"
@@ -27,7 +30,7 @@ let selectedNumber = null;
 let selectedCell = null;
 let gamePaused = false;
 let musicPaused = false;
-let enableSelection = true;
+let enableSelection = false;
 window.onload = function () {
     pauseGameButton.addEventListener("click", pauseGame);
     musicPlayButton.addEventListener("click", pauseMusic);
@@ -50,6 +53,7 @@ function activateNumbersKeypad() {
             }
             this.classList.add("selected");
             selectedNumber = this;
+            updateBoard();
         }
     }
 }
@@ -123,6 +127,16 @@ function drawSudokuBoard() {
         createdCells[i].textContent = "";
     }
 }
+function updateBoard() {
+    if (selectedCell && selectedNumber) {
+        selectedCell.textContent = selectedNumber.textContent;
+        selectedCell.classList.remove("selected")
+        selectedNumber.classList.remove("selected")
+        selectedNumber = null;
+        selectedCell = null;
+        checkBoardCorrectness();
+    }
+}
 function activateCell() {
     if (enableSelection) {
         if (this.classList.contains("selected")) {
@@ -136,6 +150,7 @@ function activateCell() {
             }
             this.classList.add("selected");
             selectedCell = this;
+            updateBoard();
         }
     }
 }
@@ -168,6 +183,49 @@ function clearPrevious() {
         numbersKeypad.children[i].classList.remove("selected")
     }
 }
+function endGame() {
+    enableSelection = false;
+    clearInterval(checkTime);
+    // Display win or loss message
+    if (youWin) {
+        alert("You won!");
+    }
+    if (youLose) {
+        alert("You lost!");
+    }
+}
+function checkBoardCorrectness() {
+    let createdCells = document.querySelectorAll('.cell');
+    let currentBoardStatus = "";
+    for (let i = 0; i < 81; i++) {
+        if (!createdCells[i].textContent == "") {
+            currentBoardStatus += createdCells[i].textContent;
+        }
+        else {
+            currentBoardStatus += "-";
+        }
+    }
+    let solution;
+    if (difficultyOptions[0].checked) {
+        solution = easy[1];
+    }
+    else if (difficultyOptions[1].checked) {
+        solution = medium[1];
+    }
+    else {
+        solution = hard[1]
+    }
+    if (!currentBoardStatus.includes("-")) {
+        if (currentBoardStatus === solution) {
+            youWin = true;
+            endGame();
+        }
+        else {
+            youLose = true;
+            endGame();
+        }
+    }
+}
 function startGame() {
     let board;
     if (difficultyOptions[0].checked) {
@@ -181,5 +239,6 @@ function startGame() {
     }
     generateSudokuBoard(board);
     checkTime = setInterval(updateTime, 1000);
+    enableSelection = true;
 }
 drawSudokuBoard();
