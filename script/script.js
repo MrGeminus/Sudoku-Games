@@ -10,21 +10,10 @@ let newGame = document.getElementById("newGame");
 let difficultyOptions = document.querySelectorAll(".difficulty_option");
 let numbersKeypad = document.getElementById("numbers_Keypad");
 let checkTime;
+let board;
 let youWin = false;
 let youLose = false;
 let noEmptyCells = false;
-const easy = [
-    "6------7------5-2------1---362----81--96-----71--9-4-5-2---651---78----345-------",
-    "685329174971485326234761859362574981549618732718293465823946517197852643456137298"
-];
-const medium = [
-    "--9-------4----6-758-31----15--4-36-------4-8----9-------75----3-------1--2--3--",
-    "619472583243985617587316924158247369926531478734698152891754236365829741472163895"
-];
-const hard = [
-    "-1-5-------97-42----5----7-5---3---7-6--2-41---8--5---1-4------2-3-----9-7----8--",
-    "712583694639714258845269173521436987367928415498175326184697532253841769976352841"
-];
 let timerTime = 0;
 let selectedNumber = null;
 let selectedCell = null;
@@ -227,18 +216,45 @@ function checkBoardCorrectness() {
     }
 }
 function startGame() {
-    let board;
     if (difficultyOptions[0].checked) {
-        board = easy[0];
+        let xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                board = this.responseText;
+                generateSudokuBoard(board);
+                checkTime = setInterval(updateTime, 1000);
+                enableSelection = true;
+            }
+        };
+        xhr.open('GET', "process.php?q=" + "easy_seeds", true);
+        xhr.send();
     }
     else if (difficultyOptions[1].checked) {
-        board = medium[0];
+        let xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                board = this.responseText;
+                generateSudokuBoard(board);
+                checkTime = setInterval(updateTime, 1000);
+                enableSelection = true;
+            }
+        };
+        xhr.open('GET', "process.php?q=" + "medium_seeds", true);
+        xhr.send();
     }
     else {
-        board = hard[0]
+        let xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                board = this.responseText;
+                generateSudokuBoard(board);
+                checkTime = setInterval(updateTime, 1000);
+                enableSelection = true;
+            }
+        };
+        xhr.open('GET', "process.php?q=" + "hard_seeds", true);
+        xhr.send();
     }
-    generateSudokuBoard(board);
-    checkTime = setInterval(updateTime, 1000);
-    enableSelection = true;
+
 }
 drawSudokuBoard();

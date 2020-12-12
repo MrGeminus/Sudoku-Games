@@ -156,7 +156,7 @@
             background-color: #ffffff;
         }
         .cell:hover{
-            background-color: #b9b9b9;
+            background-color: #23abeb;
         }
         .gray_cell{
             background-color: #e0e0e0;
@@ -164,7 +164,7 @@
     }
 } 
 .selected{
-    background-color: #b9b9b9 !important;
+    background-color: #23abeb !important;
 }
 #newGame{
     font-size: 1.3rem;
@@ -199,7 +199,7 @@
     transition: all ease-in-out 0.3s;
 }
 .numberKey:hover{
-    background-color: #b9b9b9;
+    background-color: #23abeb;
 
 }
 }
