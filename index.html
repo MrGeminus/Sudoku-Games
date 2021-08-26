@@ -5,69 +5,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mystyle.css">
     <title>Sudoku</title>
 </head>
 
 <body>
-    <header>
-        <nav class="navbar_wrapper">
-            <div class="logo"></div>
-            <div class="navigation_bar">
-                <button>LOG IN</button>
-                <button>DONATE</button>
-            </div>
-        </nav>
-    </header>
-    <section>
-        <div class="settings_bar">
-            <div class="difficulty">
-                <span class="difficulty_label">Difficulty:</span>
-                <div class="difficulty_options">
-                    <input type="radio" id="easy" name="difficulty_option" class="difficulty_option">
-                    <label for="easy">Easy</label>
-                    <input type="radio" id="medium" name="difficulty_option" class="difficulty_option">
-                    <label for="medium">Medium</label>
-                    <input type="radio" id="hard" name="difficulty_option" class="difficulty_option">
-                    <label for="hard">Hard</label>
+    <div class="page-wrapper">
+        <header class="header">
+            <nav class="navbar">
+                <a class="navbar-logo" href="https://mrgeminus.github.io/Sudoku-Games/">MY
+                    SUDOKU</a>
+            </nav>
+        </header>
+        <main class="main">
+            <div class="settings_bar">
+                <div class="difficulty">
+                    <span class="difficulty_label">Difficulty:</span>
+                    <div class="difficulty_options">
+                        <input type="radio" id="easy" name="difficulty_option"
+                            class="difficulty_option difficulty-option">
+                        <label for="easy">Easy</label>
+                        <input type="radio" id="medium" name="difficulty_option"
+                            class="difficulty_option difficulty-option">
+                        <label for="medium">Medium</label>
+                        <input type="radio" id="hard" name="difficulty_option"
+                            class="difficulty_option difficulty-option">
+                        <label for="hard">Hard</label>
+                    </div>
+                </div>
+                <div class="timer">
+                    <span class="timer_label">Timer:</span>
+                    <span class="current_time">00:00:00</span>
+                    <button class="continueGame"></button>
+                    <button class="pauseGame"></button>
+                </div>
+                <div class="mode">
+                </div>
+                <div class="music">
+                    <button id="music_mute"></button>
+                    <button id="music_play"></button>
                 </div>
             </div>
-            <div class="timer">
-                <span class="timer_label">Timer:</span>
-                <span class="current_time">00:00:00</span>
-                <button class="continueGame"></button>
-                <button class="pauseGame"></button>
-            </div>
-            <div class="mode">
-            </div>
-            <div class="music">
-                <button id="music_mute"></button>
-                <button id="music_play"></button>
-            </div>
-        </div>
-        <div class="game_section">
-            <div class="sudoku_board">
-                <div class="sudoku_box"></div>
-            </div>
-            <div class="right_container">
-                <button id="newGame">New Game</button>
-                <div id="numbers_Keypad">
-                    <div id="one" class="numberKey">1</div>
-                    <div id="two" class="numberKey">2</div>
-                    <div id="three" class="numberKey">3</div>
-                    <div id="four" class="numberKey">4</div>
-                    <div id="five" class="numberKey">5</div>
-                    <div id="six" class="numberKey">6</div>
-                    <div id="seven" class="numberKey">7</div>
-                    <div id="eight" class="numberKey">8</div>
-                    <div id="nine" class="numberKey">9</div>
+            <div class="game_section">
+                <div class="sudoku-board">
+                </div>
+                <div class="right_container">
+                    <button class="newGame">New Game</button>
+                    <div class="keypad">
+                        <button class="keypad-button">1</button>
+                        <button class="keypad-button">2</button>
+                        <button class="keypad-button">3</button>
+                        <button class="keypad-button">4</button>
+                        <button class="keypad-button">5</button>
+                        <button class="keypad-button">6</button>
+                        <button class="keypad-button">7</button>
+                        <button class="keypad-button">8</button>
+                        <button class="keypad-button">9</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <footer>
-
-    </footer>
-    <script src="script/script.js"></script>
+        </main>
+        <footer class="footer">
+            <p>Coded by <a class="footer-link" href="https://github.com/MrGeminus" target="_blank" rel="noopener">Uros
+                    Tomic</a></p>
+        </footer>
+    </div>
+    <script src="myscript.js"></script>
+    <!--<script src="js/script.js"></script>-->
 </body>
 
 </html>

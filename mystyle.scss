@@ -1,0 +1,101 @@
+.page-wrapper {
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+// Page header styling
+
+.header { 
+    padding: 1rem;
+}
+
+// Page main styling
+
+.main {
+    flex-grow: 1;
+}
+
+.sudoku-board {
+    width: 41.7rem;
+    height: 41.7rem;
+    border: 0.2rem solid black;
+    margin: 1rem 1rem 1rem 11rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3,1fr);
+
+    &__square {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3,1fr);
+        border: 0.1rem solid black;
+    }
+
+    &__field {           
+        display: grid;
+        font-size: 2rem;
+        align-items: center;
+        justify-content: center;
+        border: 0.1rem solid black;
+        background-color: #ffffff;
+    }
+}
+
+.newGame {
+    font-size: 1.3rem;
+    font-weight: bold;
+    padding: 1.3rem 9rem;
+    margin: 1rem 11rem 1rem 1rem;
+    border: none;
+    border-radius: 0.3rem;
+    color: #000000;
+    letter-spacing: 0.15rem;
+    background-color: #e0e0e0;
+    transition: all ease-in-out 0.25s;
+
+    &:hover{
+        color: #ffffff;
+        background-color: #23abeb;
+    }
+}
+.keypad {
+    margin: 1rem 11rem 1rem 1rem;
+    border: 0.1rem solid black;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+
+        &-button {
+        padding: 1.5rem;
+        display: flex;
+        font-size: 2.5rem;
+        align-items: center;
+        justify-content: center;
+        border: 0.1rem solid black;
+        background-color: #ffffff;
+        transition: all ease-in-out 0.25s;
+
+        &:hover {
+            color: #ffffff;
+            background-color: #23abeb;
+        }
+    }
+}
+
+// Page footer styling
+
+.footer {
+    padding: 1rem;
+    font-size: 1rem;
+    text-align: center;
+    letter-spacing: 0.05rem;
+
+    &-link {
+        text-decoration: none;
+    }
+    &-link:hover {
+        text-decoration: underline;
+    }
+}
