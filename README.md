@@ -25,7 +25,7 @@
 ### Built with
 
 - CSS
-- Grid
+- TypeScript
 
 ### Useful resources
 

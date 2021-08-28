@@ -215,7 +215,6 @@ function checkBoardCorrectness() {
         }
     }
 }
-/*
 function startGame() {
     if (difficultyOptions[0].checked) {
         let xhr = new XMLHttpRequest();
@@ -256,5 +255,5 @@ function startGame() {
         xhr.open('GET', "process.php?q=" + "hard_seeds", true);
         xhr.send();
     }
-}*/
+}
 drawSudokuBoard();

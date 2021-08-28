@@ -2,20 +2,18 @@ var boardPattern = [];
 var counter = 0;
 var selectionIsEnabled = false;
 var gameIsPaused = false;
+var selectedRow = null;
+var selectedCol = null;
 var selectedButton = null;
 var selectedField = null;
 var timer;
 var newGameButton = document.querySelector(".newGame");
 var currentTime = document.querySelector(".current_time");
 var keypadButtons = document.querySelectorAll(".keypad-button");
-var difficulties = document.querySelectorAll(".difficulty-option");
-var sudokuFields;
+var sudokuFields = document.querySelectorAll('.sudoku-board__field');
 var sudokuSquares;
 window.onload = function () {
     newGameButton.addEventListener("click", startGame);
-    keypadButtons.forEach(function (keypadButton) {
-        keypadButton.addEventListener("click", activateKeypadButton);
-    });
 };
 function updateTime() {
     if (!gameIsPaused) {
@@ -33,19 +31,27 @@ function updateTime() {
     }
 }
 function startGame() {
+    var difficulties = document.querySelectorAll(".difficulty-option");
     difficulties.forEach(function (difficulty) {
         if (difficulty.checked === true) {
             fetchBoard(difficulty.id);
         }
     });
+    keypadButtons.forEach(function (keypadButton) {
+        keypadButton.addEventListener("click", activateKeypadButton);
+    });
+    sudokuFields.forEach(function (sudokuField) {
+        sudokuField.addEventListener("click", activateBoardField);
+    });
 }
 function endGame() {
     selectionIsEnabled = false;
     clearInterval(timer);
+    validateSolution();
 }
 // Fetching data
-function fetchBoard(difficulty) {
-    fetch("https://sugoku.herokuapp.com/board?difficulty=" + difficulty)
+function fetchBoard(selectedDifficulty) {
+    fetch("https://sugoku.herokuapp.com/board?difficulty=" + selectedDifficulty)
         .then(function (response) {
         return response.json();
     }).then(function (response) {
@@ -57,14 +63,14 @@ function fetchBoard(difficulty) {
 }
 function validateSolution() {
     var boardSolution = { board: [] };
-    sudokuSquares.forEach(function (sudokuSquare) {
-        var boardSquareFields = sudokuSquare.children;
-        var square = [];
-        for (var i = 0; i < boardSquareFields.length; i++) {
-            square.push(Number(boardSquareFields[i].textContent));
+    for (var i = 0; i < 9; i++) {
+        var row = document.querySelectorAll("sudoku-board__field-row-" + i);
+        var rowContent = [];
+        for (var i_1 = 0; i_1 < 9; i_1++) {
+            rowContent.push(Number(row[i_1].textContent));
         }
-        boardSolution.board.push(square);
-    });
+        boardSolution.board.push(rowContent);
+    }
     var encodeBoard = function (board) { return board.reduce(function (result, row, i) { return result + ("%5B" + encodeURIComponent(row) + "%5D" + (i === board.length - 1 ? '' : '%2C')); }, ''); };
     var encodeParams = function (params) {
         return Object.keys(params)
@@ -82,24 +88,25 @@ function validateSolution() {
 function setBoard(boardPattern) {
     // Clear previous board
     clearPrevious();
-    var fieldsCounter = 0;
-    var squareCounter = 0;
-    sudokuSquares.forEach(function (sudokuSquare) {
-        var boardSquareFields = sudokuSquare.children;
-        var fetchedSquareValues = boardPattern[squareCounter];
-        for (var i = 0; i < boardSquareFields.length; i++) {
-            if (fetchedSquareValues[fieldsCounter] != 0) {
-                boardSquareFields[i].textContent = fetchedSquareValues[fieldsCounter].toString();
+    for (var rowCount = 0; rowCount < 9; rowCount++) {
+        var sudokuBoardRow = document.querySelectorAll(".sudoku-board__field-row-" + (rowCount + 1));
+        var row = boardPattern[rowCount].toString().split(",");
+        for (var fieldCount = 0; fieldCount < 9; fieldCount++) {
+            if (row[fieldCount] !== '0') {
+                sudokuBoardRow[fieldCount].textContent = row[fieldCount];
+                sudokuBoardRow[fieldCount].classList.add('sudoku-board__field--locked');
             }
-            fieldsCounter += 1;
+            else {
+                sudokuBoardRow[fieldCount].classList.add('sudoku-board__field--unlocked');
+            }
         }
-        squareCounter += 1;
-        fieldsCounter = 0;
-    });
+    }
 }
 function clearPrevious() {
     sudokuFields.forEach(function (sudokuField) {
         sudokuField.textContent = "";
+        sudokuField.classList.remove("sudoku-board__field--locked");
+        sudokuField.classList.remove("sudoku-board__field--unlocked");
     });
     // Restart Timer
     counter = 0;
@@ -140,18 +147,32 @@ function activateKeypadButton(e) {
 function activateBoardField(e) {
     // Save the clicked board field element in a variable
     var selecetedBoardField = e.target;
+    var selecetedBoardFieldRowName = document.querySelectorAll("." + selecetedBoardField.classList[1]);
+    var selecetedBoardFieldColName = document.querySelectorAll("." + selecetedBoardField.classList[2]);
     // Checking if the selection is disabled
-    if (selectionIsEnabled) {
+    if (selectionIsEnabled && selecetedBoardField.classList.contains("sudoku-board__field--unlocked")) {
         if (selecetedBoardField.classList.contains("sudoku-board__field--selected")) {
             selecetedBoardField.classList.remove("sudoku-board__field--selected");
+            for (var i = 0; i < 9; i++) {
+                selecetedBoardFieldRowName[i].classList.remove('sudoku-board__field-row--selected');
+                selecetedBoardFieldColName[i].classList.remove('sudoku-board__field-col--selected');
+            }
             selectedField = null;
         }
         else {
             sudokuFields.forEach(function (sudokuField) {
                 sudokuField.classList.remove("sudoku-board__field--selected");
+                sudokuField.classList.remove("sudoku-board__field-row--selected");
+                sudokuField.classList.remove("sudoku-board__field-col--selected");
             });
             selecetedBoardField.classList.add("sudoku-board__field--selected");
             selectedField = selecetedBoardField;
+            for (var i = 0; i < 9; i++) {
+                selecetedBoardFieldRowName[i].classList.add('sudoku-board__field-row--selected');
+                selecetedBoardFieldColName[i].classList.add('sudoku-board__field-col--selected');
+            }
+            selectedRow = selecetedBoardFieldRowName;
+            selectedCol = selecetedBoardFieldColName;
             // Check if the board should be updated
             updateBoard();
         }
@@ -164,8 +185,14 @@ function updateBoard() {
         // If the condition is met
         selectedField.textContent = selectedButton.textContent;
         // Remove the selected class from both elements
-        selectedField.classList.remove("selected");
-        selectedButton.classList.remove("selected");
+        selectedField.classList.remove("sudoku-board__field--selected");
+        selectedButton.classList.remove("keypad-button--selected");
+        if (selectedRow != null && selectedCol != null) {
+            for (var i = 0; i < 9; i++) {
+                selectedRow[i].classList.remove('sudoku-board__field-row--selected');
+                selectedCol[i].classList.remove('sudoku-board__field-col--selected');
+            }
+        }
         // And reset the variables
         selectedButton = null;
         selectedField = null;
@@ -183,22 +210,21 @@ function checkBoardStatus() {
         }
     });
     if (!currentBoardStatus.includes("-")) {
-        validateSolution();
         endGame();
     }
 }
-// A function that draws the sudoku board
+/* A function that draws the sudoku board
 function drawSudokuBoard() {
     // Select the sudoku board
-    var sudokuBoard = document.querySelector(".sudoku-board");
-    for (var box = 0; box < 9; box++) {
+    let sudokuBoard: any = document.querySelector(".sudoku-board");
+    for (let box = 0; box < 9; box++) {
         // Create a 3x3 sudoku square
-        var sudokuSquare = document.createElement('div');
+        let sudokuSquare = document.createElement('div');
         // Add the square class to it for styling purposes
         sudokuSquare.className = "sudoku-board__square";
         // Create a field
-        for (var i = 0; i < 9; i++) {
-            var sudokuField = document.createElement('div');
+        for (let i = 0; i < 9; i++) {
+            let sudokuField = document.createElement('div');
             if (((i + 1) % 2) == 1) {
                 sudokuField.className = 'sudoku-board__field';
             }
@@ -213,8 +239,8 @@ function drawSudokuBoard() {
     }
     sudokuFields = document.querySelectorAll('.sudoku-board__field');
     sudokuSquares = document.querySelectorAll('.sudoku-board__square');
-    sudokuFields.forEach(function (sudokuField) {
-        sudokuField.addEventListener("click", activateBoardField);
-    });
+
 }
+
 drawSudokuBoard();
+*/
